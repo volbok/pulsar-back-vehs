@@ -3405,7 +3405,7 @@ app.get("/list_feedback", (req, res) => {
 });
 
 // inserir registro de feedback.
-app.post("/insert_almoxarifado", (req, res) => {
+app.post("/insert_feedback", (req, res) => {
   const {
     nome_paciente,
     dn_paciente,
