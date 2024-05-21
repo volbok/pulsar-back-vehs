@@ -3393,3 +3393,78 @@ app.post("/laboratorio_cliente", (req, res) => {
     res.send(results);
   });
 });
+
+// FEEDBACK DE CLIENTES (MOBILE)
+// listar todos os registros de feedback.
+app.get("/list_feedback", (req, res) => {
+  var sql = "SELECT * FROM feedback_clientes";
+  pool.query(sql, (error, results) => {
+    if (error) return res.json({ success: false, message: "ERRO DE CONEXÃO." });
+    res.send(results);
+  });
+});
+
+// inserir registro de feedback.
+app.post("/insert_almoxarifado", (req, res) => {
+  const {
+    nome_paciente,
+    dn_paciente,
+    face,
+    comentario,
+    id_pcte,
+  } = req.body;
+  var sql =
+    "INSERT INTO feedback_clientes (nome_paciente, dn_paciente, face, comentario, id_pcte) VALUES ($1, $2, $3, $4, $5)";
+  pool.query(
+    sql,
+    [
+      nome_paciente,
+      dn_paciente,
+      face,
+      comentario,
+      id_pcte,
+    ],
+    (error, results) => {
+      if (error)
+        return res.json({ success: false, message: "ERRO DE CONEXÃO." });
+      res.send(results);
+    }
+  );
+});
+
+// atualizar registro feedback.
+app.post("/update_feedback/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  const {
+    nome_paciente,
+    dn_paciente,
+    face,
+    comentario,
+    id_pcte,
+  } = req.body;
+  var sql =
+    "UPDATE feedback_clientes SET nome_paciente = $1, dn_paciente = $2, face = $3, comentario = $4, id_pcte = $5 WHERE id = $6";
+  pool.query(
+    sql,
+    [
+      nome_paciente,
+      dn_paciente,
+      face,
+      comentario,
+      id_pcte,
+      id
+    ], (error, results) => {
+      if (error) return res.json({ success: false, message: "ERRO DE CONEXÃO." });
+      res.send(results);
+    });
+});
+
+// excluir registro de feedback.
+app.get("/delete_feedback/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  var sql = "DELETE FROM feedback_clientes WHERE id = $1";
+  pool.query(sql, [id], (error, results) => {
+    if (error) return res.json({ success: false, message: "ERRO DE CONEXÃO." });
+    res.send(results);
+  });
+});
