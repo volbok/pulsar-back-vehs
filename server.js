@@ -3468,3 +3468,50 @@ app.get("/delete_feedback/:id", (req, res) => {
     res.send(results);
   });
 });
+
+// ATENDIMENTOS - ESCALAS ASSISTENCIAIS.
+// listar todos os registros de escalas assistenciais para o paciente selecionado.
+app.get("/list_escalas_assistenciais/:id_paciente", (req, res) => {
+  const id_paciente = parseInt(req.params.id_paciente);
+  var sql = "SELECT * FROM atendimento_escalas_assistenciais WHERE id_paciente = $1";
+  pool.query(sql, [id_paciente], (error, results) => {
+    if (error) return res.json({ success: false, message: "ERRO DE CONEXÃO." });
+    res.send(results);
+  });
+});
+
+// inserir escala assistencial.
+app.post("/insert_escala_assistencial", (req, res) => {
+  const {
+    id_paciente,
+    escala,
+    valor,
+    data,
+  } = req.body;
+  var sql =
+    "INSERT INTO atendimento_escalas_assistenciais (id_paciente, escala, valor, data) VALUES ($1, $2, $3, $4)";
+  pool.query(
+    sql,
+    [
+      id_paciente,
+      escala,
+      valor,
+      data,
+    ],
+    (error, results) => {
+      if (error)
+        return res.json({ success: false, message: "ERRO DE CONEXÃO." });
+      res.send(results);
+    }
+  );
+});
+
+// excluir escala assistencial.
+app.get("/delete_escala_assistencial/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  var sql = "DELETE FROM atendimento_escalas_assistenciais WHERE id = $1";
+  pool.query(sql, [id], (error, results) => {
+    if (error) return res.json({ success: false, message: "ERRO DE CONEXÃO." });
+    res.send(results);
+  });
+});
