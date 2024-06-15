@@ -450,7 +450,6 @@ app.post("/update_paciente/:id_paciente", (req, res) => {
       orgao_emissor,
       endereco_numero,
       endereco_complemento,
-      id_paciente,
       foto
     ],
     (error, results) => {
