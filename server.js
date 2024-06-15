@@ -3582,20 +3582,20 @@ app.get("/list_diagnosticos/:id_paciente", (req, res) => {
 app.post("/insert_diagnostico", (req, res) => {
   const {
     id_paciente,
-    data,
     cid,
     diagnostico,
+    data,
     profissional,
   } = req.body;
   var sql =
-    "INSERT INTO atendimento_diagnosticos (id_paciente, data, cid, diagnostico, profissional) VALUES ($1, $2, $3, $4, $5)";
+    "INSERT INTO atendimento_diagnosticos (id_paciente, cid, diagnostico, data, profissional) VALUES ($1, $2, $3, $4, $5)";
   pool.query(
     sql,
     [
       id_paciente,
-      data,
       cid,
       diagnostico,
+      data,
       profissional,
     ],
     (error, results) => {
