@@ -3566,3 +3566,52 @@ app.get("/delete_medicamento/:id", (req, res) => {
     res.send(results);
   });
 });
+
+// ATENDIMENTOS - DIAGNÓSTICOS.
+// listar todos os registros de diagnósticos para o paciente selecionado.
+app.get("/list_diagnosticos/:id_paciente", (req, res) => {
+  const id_paciente = parseInt(req.params.id_paciente);
+  var sql = "SELECT * FROM atendimento_diagnosticos WHERE id_paciente = $1";
+  pool.query(sql, [id_paciente], (error, results) => {
+    if (error) return res.json({ success: false, message: "ERRO DE CONEXÃO." });
+    res.send(results);
+  });
+});
+
+// inserir diagnóstico.
+app.post("/insert_diagnostico", (req, res) => {
+  const {
+    id_paciente,
+    data,
+    cid,
+    diagnostico,
+    profissional,
+  } = req.body;
+  var sql =
+    "INSERT INTO atendimento_diagnosticos (id_paciente, data, cid, diagnostico, profissional) VALUES ($1, $2, $3, $4, $5)";
+  pool.query(
+    sql,
+    [
+      id_paciente,
+      data,
+      cid,
+      diagnostico,
+      profissional,
+    ],
+    (error, results) => {
+      if (error)
+        return res.json({ success: false, message: "ERRO DE CONEXÃO." });
+      res.send(results);
+    }
+  );
+});
+
+// excluir diagnostico.
+app.get("/delete_diagnostico/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  var sql = "DELETE FROM atendimento_diagnosticos WHERE id = $1";
+  pool.query(sql, [id], (error, results) => {
+    if (error) return res.json({ success: false, message: "ERRO DE CONEXÃO." });
+    res.send(results);
+  });
+});
